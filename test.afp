@@ -1,14 +1,3 @@
-#print hello
-#wait 5000
-#print world
-#exec pfetch
-#clear
-#cat LICENSE
-#rm test.txt
-#newFile test.txt
-#rm test2
-#creaDir test2
-#setEdit test.txt
-write hello world
-
-exit
+##Code.holdFor -(2.5
+Code.send -(Hello World
+Code.terminate

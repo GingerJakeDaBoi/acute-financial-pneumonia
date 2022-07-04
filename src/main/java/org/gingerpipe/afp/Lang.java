@@ -75,6 +75,7 @@ public class Lang {
     public static void exec(String substring) {
 
         try {
+            //TODO Probably remove .exec (Deprecated by Gradle)
             Process p = Runtime.getRuntime().exec(substring);
             p.waitFor();
             System.out.println(" ");
@@ -178,9 +179,9 @@ public class Lang {
 
 
 
-    public static void pause(String substring) {
+    public static void pause(long millis, int nanos) {
         try {
-            Thread.sleep(Long.parseLong(substring));
+            Thread.sleep(millis, nanos);
         } catch (InterruptedException e) {
             System.out.println(" ");
             System.out.println("InterruptedException");
