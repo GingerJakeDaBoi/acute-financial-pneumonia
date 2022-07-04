@@ -6,8 +6,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Scanner;
+
+import static org.gingerpipe.afp.Interpreter.editFile;
 
 public class Lang {
 
@@ -107,12 +111,8 @@ public class Lang {
         System.out.println(substring);
     }
 
-    public static void cat() {
-        Scanner catInput = new Scanner(System.in);
-
-        System.out.print("Enter the file you want to read: ");
-        String file = catInput.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/" + file);
+    public static void cat(String substring) {
+        File f = new File(System.getProperty("user.dir") + "/" + substring);
         try {
             System.out.println(" ");
             Scanner fileScanner = new Scanner(f);
@@ -125,11 +125,8 @@ public class Lang {
         }
     }
 
-    public static void newFile() {
-        Scanner newFileInput = new Scanner(System.in);
-        System.out.print("Enter the file you want to create: ");
-        String file = newFileInput.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/" + file);
+    public static void newFile(String substring) {
+        File f = new File(System.getProperty("user.dir") + "/" + substring);
 
         if (f.exists()) {
             System.out.println(" ");
@@ -146,11 +143,8 @@ public class Lang {
         }
     }
 
-    public static void rem() {
-        Scanner remInput = new Scanner(System.in);
-        System.out.print("Enter the file or directory you want to delete: ");
-        String file = remInput.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/" + file);
+    public static void rem(String substring) {
+        File f = new File(System.getProperty("user.dir") + "/" + substring);
         if (f.exists()) {
             //noinspection ResultOfMethodCallIgnored
             f.delete();
@@ -160,11 +154,8 @@ public class Lang {
         }
     }
 
-    public static void creaDir() {
-        Scanner creaDirInput = new Scanner(System.in);
-        System.out.print("Enter the directory you want to create: ");
-        String dir = creaDirInput.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/" + dir);
+    public static void creaDir(String substring) {
+        File f = new File(System.getProperty("user.dir") + "/" + substring);
         if (f.exists()) {
             System.out.println(" ");
             System.out.println("Directory already exists");
@@ -176,32 +167,20 @@ public class Lang {
         }
     }
 
-    public static void edit() {
-        Scanner editInput = new Scanner(System.in);
-        System.out.print("Enter the file you want to edit: ");
-        String file = editInput.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/" + file);
-        if (f.exists()) {
-            System.out.println(" ");
-            System.out.print("Enter the text you want to write: ");
-            String text = editInput.nextLine();
-            try {
-                FileWriter fw = new FileWriter(f);
-                fw.write(text);
-                fw.close();
-            } catch (IOException e) {
-                System.out.println(" ");
-                System.out.println("IOException");
-            }
-        } else {
-            System.out.println(" ");
-            System.out.println("File does not exist");
-        }
+    public static void setEdit(String substring) {
+        Path editFile = Path.of(substring);
     }
 
-    public static void pause() {
+    public static void write(String editContents) throws IOException {
+        //write to file, error if file does not exist
+            Files.writeString(editFile, editContents);
+        }
+
+
+
+    public static void pause(String substring) {
         try {
-            Thread.sleep(Interpreter.waitOutput);
+            Thread.sleep(Long.parseLong(substring));
         } catch (InterruptedException e) {
             System.out.println(" ");
             System.out.println("InterruptedException");

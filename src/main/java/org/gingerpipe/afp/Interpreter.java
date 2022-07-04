@@ -2,16 +2,22 @@ package org.gingerpipe.afp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 
 public class Interpreter {
 
-    static int waitOutput = 0;
+    public static String editContents;
     static boolean isRunning = false;
+    public static Path editFile;
 
-    public static void run() {
+    public static void run() throws IOException {
         isRunning = true;
+
+
+
 
         System.out.println("Usage: acute financial pneumonia Interpreter <filename>");
         File file = new File("test.afp");
@@ -23,6 +29,8 @@ public class Interpreter {
         }
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
+
+            //TODO: Implement interpreter working with edit
             if (line.startsWith("print")) {
                 Lang.print(line.substring(6));
             } else if (line.startsWith("ls")) {
@@ -36,19 +44,22 @@ public class Interpreter {
             } else if (line.startsWith("clear") || line.startsWith("cls")) {
                 Lang.clear();
             } else if (line.startsWith("cat")) {
-                Lang.cat();
+                Lang.cat(line.substring(4));
             } else if (line.startsWith("newFile")) {
-                Lang.newFile();
+                Lang.newFile(line.substring(8));
             } else if (line.startsWith("rm")) {
-                Lang.rem();
-            } else if (line.startsWith("mkdir")) {
-                Lang.creaDir();
-            } else if (line.startsWith("edit")) {
-                Lang.edit();
+                Lang.rem(line.substring(3));
+            } else if (line.startsWith("creaDir")) {
+                Lang.creaDir(line.substring(7));
+            } else if (line.startsWith("setEdit")) {
+                Lang.setEdit(line.substring(7));
             } else if (line.startsWith("wait")) {
-                waitOutput = Integer.parseInt(line.substring(5));
-                Lang.pause();
-            } else {
+                Lang.pause(line.substring(5));
+            }else if (line.startsWith("write")) {
+                editContents = line.substring(6);
+                Lang.write(editContents);
+            }
+            else if (line.startsWith("//") || line.startsWith("#")) {
                 Lang.nothing(); //TODO: errors!
             }
         }
