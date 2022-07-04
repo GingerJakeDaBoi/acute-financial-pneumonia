@@ -32,19 +32,26 @@ public class Interpreter {
                 continue;
             }
             if (line.startsWith("Code")) {
-                String substring = line.substring(line.indexOf("-(") + 2); //TODO Rename this stupid thing
+                String inputToken = line.substring(line.indexOf("-(") + 2); //TODO Rename this stupid thing
+                String methodParams = line.contains("{") ? line.substring(line.indexOf("{") + 1, line.indexOf("}")) : null;
                 if (line.substring(4).startsWith(".send")) {
-                    Lang.print(substring);
+                    Lang.print(inputToken);
                 } else if (line.substring(4).startsWith(".holdFor")) {
-                    double time = Double.parseDouble(substring);
+                    double time = Double.parseDouble(inputToken);
                     if(time % 1 > 0) {
                         String[] split = String.valueOf(time * 1000).split("\\.");
                         Lang.pause(Long.parseLong(split[0]), Integer.parseInt(split[1]) * 1000000);
                     } else {
                         Lang.pause((long) time * 1000, 0);
                     }
-                } else if (line.substring(4).startsWith(".terminate")) { //TODO this is a method, implement that crap
-                    System.exit(0);
+                } else if (line.substring(4).startsWith(".terminate")) {
+                    Lang.print(methodParams);
+                    if(methodParams != null) {
+                        System.exit(Integer.parseInt(methodParams));
+                    } else {
+                        //TODO Add better error
+                        Lang.print("bad number");
+                    }
                 }
             }
             /*//TODO: Implement interpreter working with edit
