@@ -9,6 +9,7 @@ public class Interpreter {
 
     static String stringOutput = "";
     static boolean isRunning = false;
+    static int waitOutput = 0;
 
     public static void run() {
         isRunning = true;
@@ -24,6 +25,7 @@ public class Interpreter {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.startsWith("print")) {
+                //noinspection StringConcatenationInLoop
                 stringOutput += line.substring(6) + "\n";
                 Lang.print(line.substring(6));
             } else if (line.startsWith("ls")) {
@@ -46,19 +48,14 @@ public class Interpreter {
                 Lang.creaDir();
             } else if (line.startsWith("edit")) {
                 Lang.edit();
+            } else if (line.startsWith("wait")) {
+                waitOutput = Integer.parseInt(line.substring(5));
+                Lang.pause(waitOutput);
             } else {
                 System.out.println("Command not recognized");
             }
 
         }
         scanner.close();
-
-        //noinspection InfiniteLoopStatement
-        while(true) {
-            while(!Lang.isRunning) {
-                Lang.shell();
-            }
-            Lang.shell();
-        }
     }
 }

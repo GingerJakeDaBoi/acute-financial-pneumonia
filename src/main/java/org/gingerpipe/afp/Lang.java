@@ -205,6 +205,15 @@ public class Lang {
             System.out.println("File does not exist");
         }
     }
+    
+    public static void pause(int waitOutput) {
+        try {
+            Thread.sleep(Interpreter.waitOutput);
+        } catch (InterruptedException e) {
+            System.out.println(" ");
+            System.out.println("InterruptedException");
+        }
+    }
 }
 
 
