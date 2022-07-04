@@ -48,12 +48,8 @@ public class Interpreter {
             } else if (line.startsWith("wait")) {
                 waitOutput = Integer.parseInt(line.substring(5));
                 Lang.pause();
-            } else if (line.startsWith(" ")) {
-                Lang.nothing();
-            } else if (line.startsWith("")) {
-                Lang.nothing();
             } else {
-                System.out.println("Command not recognized");
+                Lang.nothing(); //TODO: errors!
             }
         }
         scanner.close();
