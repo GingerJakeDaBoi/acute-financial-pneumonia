@@ -4,10 +4,10 @@ public class Main {
     @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
         while (true) {
-            while (!Shell.isRunning) {
-                Shell.run();
+            while (!Interpreter.isRunning) {
+                Interpreter.run();
             }
-            Shell.run();
+
         }
     }
 }
