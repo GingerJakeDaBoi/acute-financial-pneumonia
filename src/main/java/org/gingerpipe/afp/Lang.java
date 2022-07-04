@@ -11,31 +11,34 @@ import java.util.Scanner;
 
 public class Lang {
 
-    static boolean isRunning = false;
 
-    public static void shell() {
-        isRunning = true;
+//Unused code for a shell, may get working later
 
-        System.out.print("afp> ");
-        Scanner TermIn = new Scanner(System.in);
-        String command = TermIn.nextLine();
-
-
-        switch (command) {
-            case "ls" -> ls();
-            case "pwd" -> pwd();
-            case "exit" -> System.exit(0);
-            case "exec" -> exec();
-            case "clear", "cls" -> clear();
-            case "print" -> print(Interpreter.stringOutput);
-            case "cat" -> cat();
-            case "newFile" -> newFile();
-            case "rm" -> rem();
-            case "mkdir" -> creaDir();
-            case "edit" -> edit();
-            default -> System.out.println("Command not recognized");
-        }
-    }
+//    static boolean isRunning = false;
+//
+//    public static void shell() {
+//        isRunning = true;
+//
+//        System.out.print("afp> ");
+//        Scanner TermIn = new Scanner(System.in);
+//        String command = TermIn.nextLine();
+//
+//
+//        switch (command) {
+//            case "ls" -> ls();
+//            case "pwd" -> pwd();
+//            case "exit" -> System.exit(0);
+//            case "exec" -> exec();
+//            case "clear", "cls" -> clear();
+//            case "print" -> print();
+//            case "cat" -> cat();
+//            case "newFile" -> newFile();
+//            case "rm" -> rem();
+//            case "mkdir" -> creaDir();
+//            case "edit" -> edit();
+//            default -> System.out.println("Command not recognized");
+//        }
+//    }
 
     public static void ls() {
         File fileRoot = new File(System.getProperty("user.dir"));
@@ -65,14 +68,10 @@ public class Lang {
         System.out.println(System.getProperty("user.dir"));
     }
 
-    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
-    public static void exec() {
-        Scanner exec = new Scanner(System.in);
-        System.out.print("Enter the program you want to execute: ");
-        String program = exec.nextLine();
+    public static void exec(String substring) {
 
         try {
-            Process p = Runtime.getRuntime().exec(program);
+            Process p = Runtime.getRuntime().exec(substring);
             p.waitFor();
             System.out.println(" ");
             Scanner execOut = new Scanner(p.getInputStream());
@@ -86,7 +85,6 @@ public class Lang {
             }
 
             p.waitFor();
-            p.destroy();
         } catch (FileNotFoundException e) {
             System.out.println(" ");
             System.out.println("File not found");
@@ -96,11 +94,6 @@ public class Lang {
         } catch (InterruptedException e) {
             System.out.println(" ");
             System.out.println("InterruptedException");
-        }
-
-        if (exec.equals("")) {
-            System.out.println(" ");
-            System.out.println("No program specified");
         }
     }
 
@@ -205,14 +198,18 @@ public class Lang {
             System.out.println("File does not exist");
         }
     }
-    
-    public static void pause(int waitOutput) {
+
+    public static void pause() {
         try {
             Thread.sleep(Interpreter.waitOutput);
         } catch (InterruptedException e) {
             System.out.println(" ");
             System.out.println("InterruptedException");
         }
+    }
+
+    public static void nothing() {
+
     }
 }
 

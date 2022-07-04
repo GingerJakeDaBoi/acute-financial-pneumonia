@@ -1,4 +1,10 @@
 print hello
 wait 5000
 print world
+exec pfetch
+clear
+
+
+
+
 exit

@@ -7,9 +7,8 @@ import java.util.Scanner;
 
 public class Interpreter {
 
-    static String stringOutput = "";
-    static boolean isRunning = false;
     static int waitOutput = 0;
+    static boolean isRunning = false;
 
     public static void run() {
         isRunning = true;
@@ -25,8 +24,6 @@ public class Interpreter {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.startsWith("print")) {
-                //noinspection StringConcatenationInLoop
-                stringOutput += line.substring(6) + "\n";
                 Lang.print(line.substring(6));
             } else if (line.startsWith("ls")) {
                 Lang.ls();
@@ -34,8 +31,8 @@ public class Interpreter {
                 Lang.pwd();
             } else if (line.startsWith("exit")) {
                 System.exit(0);
-            } else if (line.startsWith("exec")) {
-                Lang.exec();
+            } else if (line.startsWith("exec ")) {
+                Lang.exec(line.substring(5));
             } else if (line.startsWith("clear") || line.startsWith("cls")) {
                 Lang.clear();
             } else if (line.startsWith("cat")) {
@@ -50,12 +47,16 @@ public class Interpreter {
                 Lang.edit();
             } else if (line.startsWith("wait")) {
                 waitOutput = Integer.parseInt(line.substring(5));
-                Lang.pause(waitOutput);
+                Lang.pause();
+            } else if (line.startsWith(" ")) {
+                Lang.nothing();
+            } else if (line.startsWith("")) {
+                Lang.nothing();
             } else {
                 System.out.println("Command not recognized");
             }
-
         }
         scanner.close();
     }
+
 }
