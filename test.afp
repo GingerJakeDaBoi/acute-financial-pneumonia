@@ -1,5 +1,1 @@
-print
-print
-print
-ls
-exit
+print hello

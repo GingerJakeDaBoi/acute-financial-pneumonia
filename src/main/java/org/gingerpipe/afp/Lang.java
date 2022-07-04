@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Shell {
+public class Lang {
 
     static boolean isRunning = false;
 
-    public static void run() {
+    public static void shell() {
         isRunning = true;
 
         System.out.print("afp> ");
@@ -27,7 +27,7 @@ public class Shell {
             case "exit" -> System.exit(0);
             case "exec" -> exec();
             case "clear", "cls" -> clear();
-            case "print" -> print();
+            case "print" -> print(Interpreter.stringOutput);
             case "cat" -> cat();
             case "newFile" -> newFile();
             case "rm" -> rem();
@@ -110,12 +110,8 @@ public class Shell {
         }
     }
 
-    public static void print() {
-        Scanner printInput = new Scanner(System.in);
-        System.out.print("Enter the text you want to print: ");
-        String print = printInput.nextLine();
-        System.out.println(" ");
-        System.out.println(print);
+    public static void print(String substring) {
+        System.out.println(substring);
     }
 
     public static void cat() {
@@ -147,6 +143,7 @@ public class Shell {
             System.out.println("File already exists");
         } else {
             try {
+                //noinspection ResultOfMethodCallIgnored
                 f.createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);

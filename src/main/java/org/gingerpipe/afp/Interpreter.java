@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Interpreter {
 
+    static String stringOutput = "";
     static boolean isRunning = false;
 
     public static void run() {
@@ -23,27 +24,28 @@ public class Interpreter {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.startsWith("print")) {
-                Shell.print();
+                stringOutput += line.substring(6) + "\n";
+                Lang.print(line.substring(6));
             } else if (line.startsWith("ls")) {
-                Shell.ls();
+                Lang.ls();
             } else if (line.startsWith("pwd")) {
-                Shell.pwd();
+                Lang.pwd();
             } else if (line.startsWith("exit")) {
                 System.exit(0);
             } else if (line.startsWith("exec")) {
-                Shell.exec();
+                Lang.exec();
             } else if (line.startsWith("clear") || line.startsWith("cls")) {
-                Shell.clear();
+                Lang.clear();
             } else if (line.startsWith("cat")) {
-                Shell.cat();
+                Lang.cat();
             } else if (line.startsWith("newFile")) {
-                Shell.newFile();
+                Lang.newFile();
             } else if (line.startsWith("rm")) {
-                Shell.rem();
+                Lang.rem();
             } else if (line.startsWith("mkdir")) {
-                Shell.creaDir();
+                Lang.creaDir();
             } else if (line.startsWith("edit")) {
-                Shell.edit();
+                Lang.edit();
             } else {
                 System.out.println("Command not recognized");
             }
@@ -53,10 +55,10 @@ public class Interpreter {
 
         //noinspection InfiniteLoopStatement
         while(true) {
-            while(!Shell.isRunning) {
-                Shell.run();
+            while(!Lang.isRunning) {
+                Lang.shell();
             }
-            Shell.run();
+            Lang.shell();
         }
     }
 }
