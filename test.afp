@@ -8,3 +8,7 @@ Code.prepare {
     int num1 = 6
     floating num2 = 4.3
 }
+
+Code.send.val -(num2
+Code.variable.set -(num2 / 2.3
+Code.send.val -(num2

@@ -15,6 +15,7 @@ public class Interpreter {
     public static HashMap<String, String> stringVars = new HashMap<>();
     public static HashMap<String, Integer> intVars = new HashMap<>();
     public static HashMap<String, Float> floatVars = new HashMap<>();
+    public static String heldData;
     static boolean isRunning = false;
     static boolean initVars = false;
     public static Path editFile;
@@ -32,15 +33,29 @@ public class Interpreter {
         }
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
+            heldData = "";
 
             if (line.startsWith("##")) {
                 continue;
             }
             if (line.startsWith("Code")) {
-                String inputToken = line.substring(line.indexOf("-(") + 2); //TODO Rename this stupid thing
+                String inputToken = line.substring(line.indexOf("-(") + 2);
                 String methodParams = line.contains("{") && line.contains("}") ? line.substring(line.indexOf("{") + 1, line.indexOf("}")) : null;
                 if (line.substring(4).startsWith(".send")) {
-                    Lang.print(inputToken);
+                    if (line.contains(".val")) {
+                        if (boolVars.containsKey(inputToken)) {
+                            heldData = boolVars.get(inputToken).toString();
+                        } else if (stringVars.containsKey(inputToken)) {
+                            heldData = stringVars.get(inputToken);
+                        } else if (intVars.containsKey(inputToken)) {
+                            heldData = intVars.get(inputToken).toString();
+                        } else if (floatVars.containsKey(inputToken)) {
+                            heldData = floatVars.get(inputToken).toString();
+                        }
+                        Lang.print(heldData);
+                    } else {
+                        Lang.print(inputToken);
+                    }
                 } else if (line.substring(4).startsWith(".holdFor")) {
                     double time = Double.parseDouble(inputToken);
                     if(time % 1 > 0) {
@@ -152,10 +167,36 @@ public class Interpreter {
                             }
                             line = scanner.nextLine();
                         }
-                        Lang.print(boolVars.toString());
-                        Lang.print(stringVars.toString());
-                        Lang.print(intVars.toString());
-                        Lang.print(floatVars.toString());
+                    }
+                } else if (line.substring(4).startsWith(".variable")) {
+                    if (line.substring(13).startsWith(".call")) {
+                        if (boolVars.containsKey(inputToken)) {
+                            heldData = boolVars.get(inputToken).toString();
+                        } else if (stringVars.containsKey(inputToken)) {
+                            heldData = stringVars.get(inputToken);
+                        } else if (intVars.containsKey(inputToken)) {
+                            heldData = intVars.get(inputToken).toString();
+                        } else if (floatVars.containsKey(inputToken)) {
+                            heldData = floatVars.get(inputToken).toString();
+                        }
+                    } else if (line.substring(13).startsWith(".set")) {
+                        String dataName = inputToken.substring(0, inputToken.indexOf("/"));
+                        String dataVal = inputToken.substring(inputToken.indexOf("/") + 1);
+                        if (dataName.charAt(dataName.length() - 1) == ' ') {
+                            dataName = dataName.substring(0, dataName.length() - 1);
+                        }
+                        if (dataVal.charAt(0) == ' ') {
+                            dataVal = dataVal.substring(1);
+                        }
+                        if (boolVars.containsKey(dataName)) {
+                            boolVars.put(dataName, Boolean.parseBoolean(dataVal));
+                        } else if (stringVars.containsKey(dataName)) {
+                            stringVars.put(dataName, dataVal);
+                        } else if (intVars.containsKey(dataName)) {
+                            intVars.put(dataName, Integer.parseInt(dataVal));
+                        } else if (floatVars.containsKey(dataName)) {
+                            floatVars.put(dataName, Float.parseFloat(dataVal));
+                        }
                     }
                 }
             }
