@@ -4,45 +4,19 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static org.gingerpipe.afp.Interpreter.editFile;
+import static org.gingerpipe.afp.Interpreter.*;
 
 public class Lang {
-
-
-//Unused code for a shell, may get working later
-
-//    static boolean isRunning = false;
-//
-//    public static void shell() {
-//        isRunning = true;
-//
-//        System.out.print("afp> ");
-//        Scanner TermIn = new Scanner(System.in);
-//        String command = TermIn.nextLine();
-//
-//
-//        switch (command) {
-//            case "ls" -> ls();
-//            case "pwd" -> pwd();
-//            case "exit" -> System.exit(0);
-//            case "exec" -> exec();
-//            case "clear", "cls" -> clear();
-//            case "print" -> print();
-//            case "cat" -> cat();
-//            case "newFile" -> newFile();
-//            case "rm" -> rem();
-//            case "mkdir" -> creaDir();
-//            case "edit" -> edit();
-//            default -> System.out.println("Command not recognized");
-//        }
-//    }
+    public static String currentBoolVar = "";
+    public static String currentIntVar = "";
+    public static String currentFloatVar = "";
+    public static String currentStringVar = "";
 
     public static void ls() {
         File fileRoot = new File(System.getProperty("user.dir"));
@@ -169,15 +143,19 @@ public class Lang {
     }
 
     public static void setEdit(String substring) {
-        Path editFile = Path.of(substring);
+        Interpreter.editFile = String.valueOf(Path.of(substring));
+
     }
 
     public static void write(String editContents) throws IOException {
         //write to file, error if file does not exist
-            Files.writeString(editFile, editContents);
+        File f = new File(Interpreter.editFile);
+        if (f.exists()) {
+            Files.writeString(Path.of(editFile), editContents);
+        } else {
+            throw new IOException("File does not exist");
         }
-
-
+    }
 
     public static void pause(long millis, int nanos) {
         try {
@@ -190,6 +168,86 @@ public class Lang {
 
     public static void nothing() {
 
+    }
+
+    public static void boolVar(String substring) {
+        boolVars.put(substring, false);
+    }
+
+    public static void intVar(String substring) {
+        intVars.put(substring, 0);
+    }
+
+    public static void floatVar(String substring) {
+        floatVars.put(substring, 0.0F);
+    }
+
+    public static void stringVar(String substring) {
+        stringVars.put(substring, "");
+    }
+
+    public static void setBool(String substring) {
+        if (boolVars.containsKey(substring)) {
+            currentBoolVar = substring;
+        } else {
+            throw new RuntimeException("Variable does not exist");
+        }
+    }
+
+    public static void setInt(String substring) {
+        if (intVars.containsKey(substring)) {
+            currentIntVar = substring;
+        } else {
+            throw new RuntimeException("Variable does not exist");
+        }
+    }
+
+    public static void setFloat(String substring) {
+        if (floatVars.containsKey(substring)) {
+            currentFloatVar = substring;
+        } else {
+            throw new RuntimeException("Variable does not exist");
+        }
+    }
+
+    public static void setString(String substring) {
+        if (stringVars.containsKey(substring)) {
+            currentStringVar = substring;
+        } else {
+            throw new RuntimeException("Variable does not exist");
+        }
+    }
+
+    public static void editBool(String substring) {
+        if (currentBoolVar != null) {
+            boolVars.put(currentBoolVar, Boolean.parseBoolean(substring));
+        } else {
+            throw new RuntimeException("No variable selected");
+        }
+    }
+
+    public static void editInt(String substring) {
+        if (currentIntVar != null) {
+            intVars.put(currentIntVar, Integer.parseInt(substring));
+        } else {
+            throw new RuntimeException("No variable selected");
+        }
+    }
+
+    public static void editFloat(String substring) {
+        if (currentFloatVar != null) {
+            floatVars.put(currentFloatVar, Float.parseFloat(substring));
+        } else {
+            throw new RuntimeException("No variable selected");
+        }
+    }
+
+    public static void editString(String substring) {
+        if (currentStringVar != null) {
+            stringVars.put(currentStringVar, substring);
+        } else {
+            throw new RuntimeException("No variable selected");
+        }
     }
 }
 

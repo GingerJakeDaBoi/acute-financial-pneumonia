@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -85,6 +85,30 @@ public class Interpreter {
             }
             else if (line.startsWith("//") || line.startsWith("#")) {
                 Lang.nothing(); //TODO: errors!
+            } else if (line.startsWith("initBool")) {
+                Lang.boolVar(line.substring(9));
+            } else if (line.startsWith("initInt")) {
+                Lang.intVar(line.substring(8));
+            } else if (line.startsWith("initFloat")) {
+                Lang.floatVar(line.substring(10));
+            } else if (line.startsWith("initString")) {
+                Lang.stringVar(line.substring(11));
+            } else if (line.startsWith("setBool")) {
+                Lang.setBool(line.substring(8));
+            } else if (line.startsWith("setInt")) {
+                Lang.setInt(line.substring(7));
+            } else if (line.startsWith("setFloat")) {
+                Lang.setFloat(line.substring(9));
+            } else if (line.startsWith("setString")) {
+                Lang.setString(line.substring(10));
+            } else if (line.startsWith("editBool")) {
+                Lang.editBool(line.substring(9));
+            } else if (line.startsWith("editInt")) {
+                Lang.editInt(line.substring(8));
+            } else if (line.startsWith("editFloat")) {
+                Lang.editFloat(line.substring(10));
+            } else if (line.startsWith("editString")) {
+                Lang.editString(line.substring(11));
             }*/
         }
         scanner.close();
