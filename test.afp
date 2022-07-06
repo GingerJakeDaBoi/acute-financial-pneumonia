@@ -9,6 +9,30 @@
 #rm test2
 #creaDir test2
 #setEdit test.txt
-write hello world
+#write hello world
+
+initBool coolBool
+initInt coolInt
+initFloat coolFloat
+initString coolString
+
+setBool coolBool
+setInt coolInt
+setFloat coolFloat
+setString coolString
+
+editBool true
+editInt 23
+editFloat 23.23
+editString hello world
+
+initBool uncoolbool
+setBool uncoolbool
+editBool false
+
+
+bool 1
+
+
 
 exit
