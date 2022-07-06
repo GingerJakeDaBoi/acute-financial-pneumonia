@@ -41,18 +41,23 @@ public class Interpreter {
             if (line.startsWith("Code")) {
                 String inputToken = line.substring(line.indexOf("-(") + 2);
                 String methodParams = line.contains("{") && line.contains("}") ? line.substring(line.indexOf("{") + 1, line.indexOf("}")) : null;
+                String varData = line.contains("[") && line.contains("]") ? line.substring(line.indexOf("[") + 1, line.indexOf("]")) : null;
                 if (line.substring(4).startsWith(".send")) {
-                    if (line.contains(".val")) {
-                        if (boolVars.containsKey(inputToken)) {
-                            heldData = boolVars.get(inputToken).toString();
-                        } else if (stringVars.containsKey(inputToken)) {
-                            heldData = stringVars.get(inputToken);
-                        } else if (intVars.containsKey(inputToken)) {
-                            heldData = intVars.get(inputToken).toString();
-                        } else if (floatVars.containsKey(inputToken)) {
-                            heldData = floatVars.get(inputToken).toString();
+                    if (varData != null) {
+                        if (inputToken.equals("[" + varData + "]")) {
+                            if (boolVars.containsKey(varData)) {
+                                heldData = boolVars.get(varData).toString();
+                            } else if (stringVars.containsKey(varData)) {
+                                heldData = stringVars.get(varData);
+                            } else if (intVars.containsKey(varData)) {
+                                heldData = intVars.get(varData).toString();
+                            } else if (floatVars.containsKey(varData)) {
+                                heldData = floatVars.get(varData).toString();
+                            }
+                            Lang.print(heldData);
+                        } else {
+                            Lang.print("functionality coming soon");
                         }
-                        Lang.print(heldData);
                     } else {
                         Lang.print(inputToken);
                     }
