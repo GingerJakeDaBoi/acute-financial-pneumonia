@@ -142,7 +142,7 @@ public class Lang {
         }
     }
 
-    public static void setEdit(String substring) {
+    /*public static void setEdit(String substring) {
         Interpreter.editFile = String.valueOf(Path.of(substring));
 
     }
@@ -155,7 +155,7 @@ public class Lang {
         } else {
             throw new IOException("File does not exist");
         }
-    }
+    }*/
 
     public static void pause(long millis, int nanos) {
         try {
@@ -170,7 +170,7 @@ public class Lang {
 
     }
 
-    public static void boolVar(String substring) {
+    /*public static void boolVar(String substring) {
         boolVars.put(substring, false);
     }
 
@@ -248,7 +248,7 @@ public class Lang {
         } else {
             throw new RuntimeException("No variable selected");
         }
-    }
+    }*/
 }
 
 
