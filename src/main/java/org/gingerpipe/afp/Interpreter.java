@@ -11,7 +11,12 @@ import java.util.Scanner;
 public class Interpreter {
 
     public static String editContents;
+    public static HashMap<String, Boolean> boolVars = new HashMap<>();
+    public static HashMap<String, String> stringVars = new HashMap<>();
+    public static HashMap<String, Integer> intVars = new HashMap<>();
+    public static HashMap<String, Float> floatVars = new HashMap<>();
     static boolean isRunning = false;
+    static boolean initVars = false;
     public static Path editFile;
 
     public static void run() throws IOException {
@@ -33,7 +38,7 @@ public class Interpreter {
             }
             if (line.startsWith("Code")) {
                 String inputToken = line.substring(line.indexOf("-(") + 2); //TODO Rename this stupid thing
-                String methodParams = line.contains("{") ? line.substring(line.indexOf("{") + 1, line.indexOf("}")) : null;
+                String methodParams = line.contains("{") && line.contains("}") ? line.substring(line.indexOf("{") + 1, line.indexOf("}")) : null;
                 if (line.substring(4).startsWith(".send")) {
                     Lang.print(inputToken);
                 } else if (line.substring(4).startsWith(".holdFor")) {
@@ -51,6 +56,106 @@ public class Interpreter {
                     } else {
                         //TODO Add better error
                         Lang.print("bad number");
+                    }
+                } else if (line.substring(4).startsWith(".prepare")) {
+                    if (line.indexOf("{") == line.length() - 1) {
+                        line = scanner.nextLine();
+                        initVars = true;
+                        while (initVars) {
+                            String varName;
+                            String varVal;
+                            boolean whiteSpace = line.contains("=") && line.substring(line.indexOf("=")).contains(" ");
+                            if (line.contains("bool")) {
+                                varName = line.substring(line.indexOf("bool") + 5, line.indexOf("="));
+                                if (varName.charAt(varName.length() - 1) == ' ') {
+                                    varName = varName.substring(0, varName.length() - 1);
+                                }
+                                if (whiteSpace) {
+                                    int i = 1;
+                                    while (line.substring(line.indexOf("=") + i).startsWith(" ")) {
+                                        i++;
+                                    }
+                                    varVal = line.substring(line.indexOf("=") + i);
+                                } else {
+                                    varVal = line.substring(line.indexOf("=") + 1);
+                                }
+                                if (!(boolVars.containsKey(varName) || stringVars.containsKey(varName) || intVars.containsKey(varName) || floatVars.containsKey(varName))) {
+                                    boolVars.put(varName, Boolean.parseBoolean(varVal));
+                                } else {
+                                    //TODO Implement errors
+                                    Lang.print("repeated variable name");
+                                }
+                            } else if (line.contains("text")) {
+                                varName = line.substring(line.indexOf("text") + 5, line.indexOf("="));
+                                if (varName.charAt(varName.length() - 1) == ' ') {
+                                    varName = varName.substring(0, varName.length() - 1);
+                                }
+                                if (whiteSpace) {
+                                    int i = 1;
+                                    while (line.substring(line.indexOf("=") + i).startsWith(" ")) {
+                                        i++;
+                                    }
+                                    varVal = line.substring(line.indexOf("=") + i);
+                                } else {
+                                    varVal = line.substring(line.indexOf("=") + 1);
+                                }
+                                if (!(boolVars.containsKey(varName) || stringVars.containsKey(varName) || intVars.containsKey(varName) || floatVars.containsKey(varName))) {
+                                    stringVars.put(varName, varVal);
+                                } else {
+                                    //TODO Implement errors
+                                    Lang.print("repeated variable name");
+                                }
+                            } else if (line.contains("int")) {
+                                varName = line.substring(line.indexOf("int") + 4, line.indexOf("="));
+                                if (varName.charAt(varName.length() - 1) == ' ') {
+                                    varName = varName.substring(0, varName.length() - 1);
+                                }
+                                if (whiteSpace) {
+                                    int i = 1;
+                                    while (line.substring(line.indexOf("=") + i).startsWith(" ")) {
+                                        i++;
+                                    }
+                                    varVal = line.substring(line.indexOf("=") + i);
+                                } else {
+                                    varVal = line.substring(line.indexOf("=") + 1);
+                                }
+                                if (!(boolVars.containsKey(varName) || stringVars.containsKey(varName) || intVars.containsKey(varName) || floatVars.containsKey(varName))) {
+                                    intVars.put(varName, Integer.parseInt(varVal));
+                                } else {
+                                    //TODO Implement errors
+                                    Lang.print("repeated variable name");
+                                }
+                            } else if (line.contains("floating")) {
+                                varName = line.substring(line.indexOf("floating") + 9, line.indexOf("="));
+                                if (varName.charAt(varName.length() - 1) == ' ') {
+                                    varName = varName.substring(0, varName.length() - 1);
+                                }
+                                if (whiteSpace) {
+                                    int i = 1;
+                                    while (line.substring(line.indexOf("=") + i).startsWith(" ")) {
+                                        i++;
+                                    }
+                                    varVal = line.substring(line.indexOf("=") + i);
+                                } else {
+                                    varVal = line.substring(line.indexOf("=") + 1);
+                                }
+                                if (!(boolVars.containsKey(varName) || stringVars.containsKey(varName) || intVars.containsKey(varName) || floatVars.containsKey(varName))) {
+                                    floatVars.put(varName, Float.parseFloat(varVal));
+                                } else {
+                                    //TODO Implement errors
+                                    Lang.print("repeated variable name");
+                                }
+                            }
+                            if (line.contains("}")) {
+                                initVars = false;
+                                break;
+                            }
+                            line = scanner.nextLine();
+                        }
+                        Lang.print(boolVars.toString());
+                        Lang.print(stringVars.toString());
+                        Lang.print(intVars.toString());
+                        Lang.print(floatVars.toString());
                     }
                 }
             }

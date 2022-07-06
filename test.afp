@@ -1,3 +1,10 @@
 ##Code.holdFor -(2.5
-Code.send -(Hello World
-Code.terminate{}
+##Code.send -(Hello World
+##Code.terminate{0}
+
+Code.prepare {
+    bool name = true
+    text string = Hi
+    int num1 = 6
+    floating num2 = 4.3
+}
